@@ -1,59 +1,66 @@
 #!/usr/bin/python3
-"""N Queens Module.
-Contains the N Queens problem solver.
-"""
-import sys
+"""N-Queen puzzle using backtracking"""
 
 
-def error_exit(message="", code=1):
-    """Handles exit.
+def safeSpot(queenPosition, queenN):
+    """Safe spot checker
     Args:
-        message (str): the message to display on stdout.
-        code (int): the exit code.
-    """
-    print(message)
-    exit(code)
-
-
-def test_pos(board, y):
-    """Tests if wether a queen can be placed at the current position.
-    Args:
-        board (list): the chessboard.
-        y (int): the height parameter.
-    """
-    for i in range(y):
-        if board[y][1] is board[i][1]:
+        queenPosition: Array with queens positions
+        queenN: Amount of queens"""
+    for i in range(queenN):
+        if queenPosition[i] == queenPosition[queenN]:
             return False
-        if abs(board[y][1] - board[i][1]) == y - i:
+        if abs(queenPosition[i] - queenPosition[queenN]) == abs(i - queenN):
             return False
     return True
 
 
-def rec_backtrack(board, y):
-    """Backtrack the possibilities.
+def locateQueens(queenPosition, queenNumber):
+    """Prints the list with the Queens positions
     Args:
-        board (list): the chessboard.
-        y (int): the height parameter.
-    """
-    if y is N:
-        print(board)
-    else:
-        for x in range(N):
-            board[y][1] = x
-            if test_pos(board, y):
-                rec_backtrack(board, y + 1)
+        queenPosition: Array with queens positions
+        queenNumber: amount of queens"""
+    queens = []
+    for i in range(queenNumber):
+        queens.append([i, queenPosition[i]])
+    print(queens)
 
 
-if len(sys.argv) is not 2:
-    error_exit("Usage: nqueens N")
+def Queen(queenPosition, queenNumber):
+    """Backtracking algorithm
+    Args:
+        queenPosition: Array with queens positions
+        queenNumber: amount of queens"""
+    if queenNumber is len(queenPosition):
+        locateQueens(queenPosition, queenNumber)
+        return
+    queenPosition[queenNumber] = -1
+    while((queenPosition[queenNumber] < len(queenPosition) - 1)):
+        queenPosition[queenNumber] += 1
+        if safeSpot(queenPosition, queenNumber) is True:
+            if queenNumber is not len(queenPosition):
+                Queen(queenPosition, queenNumber + 1)
 
-try:
-    N = int(sys.argv[1])
-except:
-    error_exit("N must be a number")
 
-if N < 4:
-    error_exit("N must be at least 4")
+def solveNQueen(size):
+    """Function that applies backtracking algorithm
+    Args:
+        size: size of the chessboard"""
+    queenPosition = [-1 for i in range(size)]
+    Queen(queenPosition, 0)
 
-board = [[y, 0] for y in range(N)]
-rec_backtrack(board, 0)
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) == 1 or len(sys.argv) > 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
+    try:
+        size = int(sys.argv[1])
+    except(TypeError, ValueError):
+        print("N must be a number")
+        sys.exit(1)
+    if size < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+    solveNQueen(size)
