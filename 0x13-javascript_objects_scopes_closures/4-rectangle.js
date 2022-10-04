@@ -2,15 +2,19 @@
 // class Rectangle that defines a rectangle, rotate, double by 2
 class Rectangle {
   constructor (w, h) {
-    if (w > 0 && h > 0) {
-      this.width = w;i
+    if ((w > 0) && (h > 0)) {
+      this.width = w;
       this.height = h;
     }
   }
 
   print () {
-    for (let column = 0; column < this.height; column++) {
-      console.log('X'.repeat(this.width));
+    for (let i = 0; i < this.height; i++) {
+      let s = '';
+      for (let j = 0; j < this.width; j++) {
+        s += 'X';
+      }
+      console.log(s);
     }
   }
 
@@ -21,8 +25,8 @@ class Rectangle {
   }
 
   double () {
-    this.width = this.width * 2;
-    this.height = this.height * 2;
+    this.width *= 2;
+    this.height *= 2;
   }
 }
 
